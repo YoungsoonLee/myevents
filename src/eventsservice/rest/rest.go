@@ -3,12 +3,13 @@ package rest
 import (
 	"net/http"
 
+	"github.com/YoungsoonLee/myevents/src/lib/msgqueue"
 	"github.com/YoungsoonLee/myevents/src/lib/persistence"
 	"github.com/gorilla/mux"
 )
 
-func ServeAPI(endpoint string, databasehandler persistence.DatabaseHandler) error {
-	handler := NewEventHandler(databasehandler)
+func ServeAPI(endpoint string, databasehandler persistence.DatabaseHandler, eventEmitter msgqueue.EventEmitter) error {
+	handler := NewEventHandler(databasehandler, eventEmitter)
 
 	r := mux.NewRouter()
 

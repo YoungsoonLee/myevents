@@ -7,17 +7,20 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/YoungsoonLee/myevents/src/lib/msgqueue"
 	"github.com/YoungsoonLee/myevents/src/lib/persistence"
 	"github.com/gorilla/mux"
 )
 
 type eventServiceHandler struct {
-	dbhandler persistence.DatabaseHandler
+	dbhandler    persistence.DatabaseHandler
+	eventEmitter msgqueue.EventEmitter
 }
 
-func NewEventHandler(databasehandler persistence.DatabaseHandler) *eventServiceHandler {
+func NewEventHandler(databasehandler persistence.DatabaseHandler, eventEmitter msgqueue.EventEmitter) *eventServiceHandler {
 	return &eventServiceHandler{
-		dbhandler: databasehandler,
+		dbhandler:    databasehandler,
+		eventEmitter: eventEmitter,
 	}
 }
 

@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"log"
 
-	msgqueue_amqp "github.com/YoungsoonLee/myevent/src/lib/msgqueue/amqp"
 	"github.com/YoungsoonLee/myevents/src/eventsservice/rest"
 	"github.com/YoungsoonLee/myevents/src/lib/configuration"
+	msgqueue_amqp "github.com/YoungsoonLee/myevents/src/lib/msgqueue/amqp"
 	"github.com/YoungsoonLee/myevents/src/lib/persistence/dblayer"
 	"github.com/streadway/amqp"
 )
@@ -25,7 +25,7 @@ func main() {
 		panic(err)
 	}
 
-	emitter, err := msgqueue_amqp.NewAMQPEventEmitter(conn)
+	eventEmitter, err := msgqueue_amqp.NewAMQPEventEmitter(conn)
 	if err != nil {
 		panic(err)
 	}
@@ -33,5 +33,5 @@ func main() {
 	fmt.Println("Connecting to database")
 	dbhandler, _ := dblayer.NewPersistenceLayer(config.Databasetype, config.DBConnection)
 
-	log.Fatal(rest.ServeAPI(config.RestfulEndpoint, dbhandler))
+	log.Fatal(rest.ServeAPI(config.RestfulEndpoint, dbhandler, eventEmitter))
 }
